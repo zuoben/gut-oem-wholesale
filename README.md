@@ -4,9 +4,9 @@ B2B site for **private label digestive enzymes & probiotics** — OEM + wholesal
 
 - **Brand:** GutSource
 - **Stack:** Astro static (`npm run build` → `dist/`)
-- **Inquiry CRM:** shared Supabase `contact_inquiries` (`source_site` = `gutsource.pages.dev`)
-- **Repo:** https://github.com/zuoben/gutsource
-- **Deploy target:** Cloudflare Pages project `gutsource`
+- **Inquiry CRM:** shared Supabase `contact_inquiries` (`source_site` = `gut-oem-wholesale.pages.dev`)
+- **Repo:** https://github.com/zuoben/gut-oem-wholesale
+- **Deploy target:** Cloudflare Pages project `gut-oem-wholesale`
 
 ## Local
 
@@ -22,11 +22,11 @@ npm run preview
 ```bash
 export CLOUDFLARE_API_TOKEN=...   # Pages edit permission
 # optional: export CLOUDFLARE_ACCOUNT_ID=...
-npx wrangler pages project create gutsource
-npx wrangler pages deploy dist --project-name=gutsource
+npx wrangler pages project create gut-oem-wholesale
+npx wrangler pages deploy dist --project-name=gut-oem-wholesale
 ```
 
-After first deploy, set `src/config.yaml` `site.site` (and `astro.config.ts` `site` if present) to the live URL and rebuild if the hostname differs from `gutsource.pages.dev`.
+After first deploy, set `src/config.yaml` `site.site` (and `astro.config.ts` `site` if present) to the live URL and rebuild if the hostname differs from `gut-oem-wholesale.pages.dev`.
 
 ## Pages shipped (v1)
 

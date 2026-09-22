@@ -15,7 +15,7 @@ export function withLlmUtm(url: string): string {
     return url;
   }
 
-  if (parsed.hostname.replace(/^www\./, '').toLowerCase() !== 'gutsource.pages.dev') {
+  if (parsed.hostname.replace(/^www\./, '').toLowerCase() !== 'gut-oem-wholesale.pages.dev') {
     return url;
   }
   if (SKIP_PATHS.has(parsed.pathname)) return url;
@@ -26,7 +26,7 @@ export function withLlmUtm(url: string): string {
   return parsed.toString();
 }
 
-/** Rewrite https://gutsource.pages.dev/... links in markdown / plain text. */
+/** Rewrite https://gut-oem-wholesale.pages.dev/... links in markdown / plain text. */
 export function tagMahjonggLinksForLlm(body: string): string {
   return body.replace(/https:\/\/mahjonggsupplies\.com\/[^\s)>\]]*/g, (url) => {
     const trimmed = url.replace(/[.,;:]+$/, '');

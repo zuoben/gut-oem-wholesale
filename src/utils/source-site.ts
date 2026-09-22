@@ -20,7 +20,7 @@ export function stripWww(host: string): string {
   return host.trim().toLowerCase().replace(/^www\./, '');
 }
 
-const GUTSOURCE_ALIASES = new Set(['gutsource.pages.dev', 'localhost', '127.0.0.1']);
+const GUT_OEM_WHOLESALE_ALIASES = new Set(['gut-oem-wholesale.pages.dev', 'localhost', '127.0.0.1']);
 
 export function canonicalSourceSite(
   value: string | null | undefined,
@@ -28,7 +28,7 @@ export function canonicalSourceSite(
 ): string {
   const host = hostnameFromUrl(value);
   if (!host) return stripWww(fallback);
-  if (GUTSOURCE_ALIASES.has(host)) return 'gutsource.pages.dev';
+  if (GUT_OEM_WHOLESALE_ALIASES.has(host)) return 'gut-oem-wholesale.pages.dev';
   return host;
 }
 
