@@ -1,0 +1,115 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import ContactUs from '~/components/widgets/Contact.astro';
+import {
+  inquiryFormButton,
+  inquiryFormDescription,
+  inquiryFormDisclaimer,
+  inquiryFormInputs,
+  inquiryFormTextarea,
+} from '~/data/inquiry-form';
+
+const faqItems = [
+  {
+    title: 'Who can open a wholesale account?',
+    description:
+      'Retailers, gyms/spas, wellness channels, and distributors. This is <strong>not</strong> a consumer subscription or personal retail cart.',
+  },
+  {
+    title: 'What are typical case packs?',
+    description:
+      'Standard digestive enzyme and probiotic SKUs ship in case packs (bottle counts per case confirmed on the price list). MOQ may be one or more cases depending on SKU.',
+  },
+  {
+    title: 'Do you wholesale RTD probiotic soda nationally?',
+    description:
+      'Not in early programs. Focus is capsule/powder dietary supplement SKUs — enzymes, probiotics, optional fiber powder.',
+  },
+];
+
+const metadata = {
+  title: 'Wholesale Digestive Enzymes & Probiotics',
+  description:
+    'Open a wholesale account or request a price list for standard digestive enzyme and probiotic dietary supplement SKUs. Case packs for retailers, gyms, and distributors.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero
+    actions={[
+      { text: 'Request price list', href: '#inquiry-form', variant: 'primary', icon: 'tabler:file-invoice' },
+      { text: 'OEM / Private Label', href: '/oem', variant: 'secondary' },
+    ]}
+  >
+    <Fragment slot="title">
+      Wholesale <span class="text-accent">account & price list</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      <p class="max-w-2xl mx-auto text-xl">
+        Restock standard digestive enzyme and probiotic SKUs in case packs — for stores, gyms, spas, and distributors.
+      </p>
+    </Fragment>
+  </Hero>
+
+  <Features
+    tagline="Wholesale assortment"
+    title="Early hero SKUs"
+    items={[
+      {
+        title: 'Digestive enzyme capsules',
+        description: 'Broad-spectrum enzyme bottles in case packs — structure/function positioning only.',
+        icon: 'tabler:pill',
+      },
+      {
+        title: 'Probiotic SKUs',
+        description: 'Pillar probiotic lines for shelf and wellness channels — reorder-friendly case MOQs.',
+        icon: 'tabler:stack',
+      },
+      {
+        title: 'Optional fiber powder',
+        description: 'Available where logistics fit; confirm packaging and MOQ on inquiry.',
+        icon: 'tabler:package',
+      },
+      {
+        title: 'No RTD soda (early)',
+        description: 'We are not offering RTD probiotic/protein soda national shipping in the early wholesale catalog.',
+        icon: 'tabler:shield-check',
+      },
+    ]}
+  />
+
+  <Features2
+    title="How to apply"
+    columns={3}
+    items={[
+      { title: '1. Tell us who you are', description: 'Retailer, gym/spa, or distributor — plus ship-to region.', icon: 'tabler:user' },
+      { title: '2. Select Wholesale pricing', description: 'Use the form channel so we send the right price list pack.', icon: 'tabler:tag' },
+      { title: '3. Confirm MOQ & terms', description: 'Case packs, freight terms, and reorder cadence in writing.', icon: 'tabler:check' },
+    ]}
+  />
+
+  <FAQs title="Wholesale FAQ" items={faqItems} />
+
+  <ContactUs
+    id="inquiry-form"
+    title="Open wholesale account / request price list"
+    subtitle="Choose Wholesale pricing (or Sample) in the form. B2B dietary supplements only — no consumer checkout."
+    compact
+    inputs={inquiryFormInputs}
+    textarea={inquiryFormTextarea}
+    disclaimer={inquiryFormDisclaimer}
+    button={inquiryFormButton}
+    description={inquiryFormDescription}
+  />
+
+  <CallToAction actions={[{ text: 'Need custom formula?', href: '/oem', variant: 'secondary' }]}>
+    <Fragment slot="title">Building your own brand?</Fragment>
+    <Fragment slot="subtitle">See OEM / private label for custom formula and packaging programs.</Fragment>
+  </CallToAction>
+</Layout>

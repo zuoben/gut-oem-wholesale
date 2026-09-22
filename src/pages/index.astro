@@ -1,0 +1,213 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import { getSiteUrl } from '~/utils/site-url';
+import { buildOrganizationSchema, ORGANIZATION_ID } from '~/utils/organization-schema';
+
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const siteUrl = getSiteUrl();
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'GutSource',
+  url: `${siteUrl}/`,
+  description:
+    'Private label digestive enzymes and probiotics — OEM custom formulas and wholesale case packs for B2B buyers.',
+  publisher: { '@id': ORGANIZATION_ID },
+};
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${siteUrl}/#webpage`,
+  url: `${siteUrl}/`,
+  name: 'Private Label Digestive Enzymes & Probiotics | OEM + Wholesale | GutSource',
+  isPartOf: { '@type': 'WebSite', url: `${siteUrl}/` },
+  about: { '@id': ORGANIZATION_ID },
+};
+
+const faqItems = [
+  {
+    title: 'Do you sell to retail consumers online?',
+    description:
+      'No. <strong>GutSource is B2B only</strong> — OEM/private label programs and wholesale accounts for brands, retailers, gyms/spas, and distributors. There is no consumer cart or personal subscription path on this site.',
+  },
+  {
+    title: 'What SKUs can we private-label first?',
+    description:
+      'Hero lines: <strong>broad-spectrum digestive enzyme capsules</strong> and <strong>pillar probiotic formulas</strong>. Optional: fiber powder. Early programs do <strong>not</strong> include RTD probiotic/protein soda national shipping.',
+  },
+  {
+    title: 'What is a typical OEM MOQ?',
+    description:
+      'MOQ depends on formula complexity, bottle count, and packaging. Many private-label runs start in the low hundreds to low thousands of bottles after sampling — share your target volume on the <a href="/contact#inquiry-form" class="text-link">inquiry form</a>.',
+  },
+  {
+    title: 'Can we open a wholesale account for standard SKUs?',
+    description:
+      'Yes. Use the <a href="/wholesale" class="text-link">Wholesale</a> page and request a price list / account. Case packs and reorder MOQs are confirmed in writing.',
+  },
+  {
+    title: 'Do you make disease-treatment or detox claims?',
+    description:
+      'No. We support <strong>dietary supplement structure/function</strong> labeling only. We do not market products to treat IBS, Crohn’s, or any disease, and we avoid “detox / cure leaky gut” style claims.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(({ title, description }) => ({
+    '@type': 'Question',
+    name: title,
+    acceptedAnswer: { '@type': 'Answer', text: description.replace(/<[^>]+>/g, '') },
+  })),
+};
+
+const metadata = {
+  title: 'Private Label Digestive Enzymes & Probiotics | OEM + Wholesale',
+  description:
+    'GutSource — B2B OEM private label and wholesale for digestive enzyme capsules, probiotics, and optional fiber powder. Structure/function dietary supplements only.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <script type="application/ld+json" set:html={JSON.stringify(buildOrganizationSchema())} />
+  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <Hero
+    actions={[
+      {
+        text: 'OEM / Private Label',
+        href: '/oem',
+        variant: 'primary',
+        icon: 'tabler:building-factory-2',
+      },
+      {
+        text: 'Wholesale',
+        href: '/wholesale',
+        variant: 'secondary',
+        icon: 'tabler:building-store',
+      },
+    ]}
+  >
+    <Fragment slot="title">
+      Private label <span class="text-accent dark:text-white">digestive enzymes & probiotics</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      <p class="text-xl hero-description max-w-3xl mx-auto">
+        B2B dual funnel: <strong>OEM private label</strong> for brand builders and
+        <strong> wholesale</strong> case packs for retailers, gyms, and distributors.
+      </p>
+      <p class="mt-4 text-sm text-muted max-w-2xl mx-auto">
+        Dietary supplements · Structure/function language only · No disease-treatment claims
+      </p>
+    </Fragment>
+  </Hero>
+
+  <section id="compliance" class="mx-auto max-w-5xl px-6 py-6">
+    <div class="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800 px-5 py-4 text-sm text-muted">
+      <strong class="text-default">Compliance:</strong> Products discussed here are <strong>dietary supplements</strong>.
+      Statements have not been evaluated by the FDA (or equivalent). Not intended to diagnose, treat, cure, or prevent any disease.
+      We do not market “detox,” “cure leaky gut,” or disease claims (including IBS/Crohn’s).
+    </div>
+  </section>
+
+  <Features
+    id="value"
+    tagline="Why GutSource"
+    title="Two clear B2B paths — one factory partner"
+    items={[
+      {
+        title: 'OEM / Private Label',
+        description:
+          'Custom or standard formulas, capsule and powder formats, label artwork, sampling, and production under your brand.',
+        icon: 'tabler:flask',
+      },
+      {
+        title: 'Wholesale restock',
+        description:
+          'Open a wholesale account for standard digestive enzyme and probiotic SKUs — case MOQs and reorder pricing.',
+        icon: 'tabler:package',
+      },
+      {
+        title: 'Hero SKUs',
+        description:
+          'Broad-spectrum digestive enzyme capsules, pillar probiotics, optional fiber powder. No RTD soda national shipping in early programs.',
+        icon: 'tabler:pill',
+      },
+      {
+        title: 'Compliance-aware copy',
+        description:
+          'We help keep marketing in structure/function lane — certificates language available; no medical claims.',
+        icon: 'tabler:shield-check',
+      },
+    ]}
+  />
+
+  <Features2
+    tagline="Choose your entrance"
+    title="OEM or Wholesale — pick the right CTA"
+    columns={2}
+    items={[
+      {
+        title: 'Start an OEM project',
+        description:
+          'Formula brief, format (capsule/powder), bottle & label, MOQ, sampling timeline. Best for brands and private-label entrepreneurs.',
+        icon: 'tabler:building-factory-2',
+      },
+      {
+        title: 'Open wholesale account',
+        description:
+          'Price list request, case packs, ship-to region, reorder cadence. Best for retailers, gyms/spas, and distributors.',
+        icon: 'tabler:building-store',
+      },
+    ]}
+  />
+
+  <Steps
+    title="How B2B inquiries work"
+    items={[
+      {
+        title: 'Tell us your channel',
+        description: 'OEM custom formula, private label, wholesale pricing, or sample — plus buyer type and volume.',
+        icon: 'tabler:message',
+      },
+      {
+        title: 'We reply with MOQ & next steps',
+        description: 'Working-day response with sampling options, indicative tiers, and document checklist.',
+        icon: 'tabler:file-invoice',
+      },
+      {
+        title: 'Sample → pilot → production / reorder',
+        description: 'Approve samples, lock artwork and specs, then run production or open wholesale reorders.',
+        icon: 'tabler:truck-delivery',
+      },
+    ]}
+    callToAction={{ text: 'Request quote', href: '/contact#inquiry-form' }}
+  />
+
+  <FAQs id="faq" title="FAQ" items={faqItems} />
+
+  <CallToAction
+    actions={[
+      { text: 'OEM / Private Label', href: '/oem', variant: 'primary' },
+      { text: 'Wholesale', href: '/wholesale', variant: 'secondary' },
+      { text: 'Contact form', href: '/contact#inquiry-form' },
+    ]}
+  >
+    <Fragment slot="title">Ready to brief or restock?</Fragment>
+    <Fragment slot="subtitle">
+      Share your buyer type, channel, and estimated bottles/cases — we route OEM vs wholesale correctly.
+    </Fragment>
+  </CallToAction>
+</Layout>

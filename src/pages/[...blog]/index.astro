@@ -1,0 +1,99 @@
+---
+import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
+
+import merge from 'lodash.merge';
+import Layout from '~/layouts/PageLayout.astro';
+import SinglePost from '~/components/blog/SinglePost.astro';
+import ToBlogLink from '~/components/blog/ToBlogLink.astro';
+
+import { getCanonical, getPermalink } from '~/utils/permalinks';
+import { getBlogCommercialCanonicalPath } from '~/utils/blog-canonical-seo';
+import { isNoindexBlogSlug } from '~/utils/seo-noindex-paths';
+import { getStaticPathsBlogPost, blogPostRobots } from '~/utils/blog';
+import BlogPostOemCta from '~/components/blog/BlogPostOemCta.astro';
+import type { MetaData } from '~/types';
+import RelatedPosts from '~/components/blog/RelatedPosts.astro';
+import { buildBlogPostingSchema } from '~/utils/organization-schema';
+import { getSiteUrl } from '~/utils/site-url';
+import { BREADCRUMB_BLOG, BREADCRUMB_HOME, buildBreadcrumbList } from '~/utils/breadcrumb-schema';
+
+export const prerender = true;
+
+export const getStaticPaths = (async () => {
+  return await getStaticPathsBlogPost();
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { post } = Astro.props as Props;
+
+const url = getCanonical(getPermalink(post.permalink, 'post'));
+const commercialPath = getBlogCommercialCanonicalPath(post.slug);
+const forceNoindex = Boolean(commercialPath) || isNoindexBlogSlug(post.slug);
+const canonical = commercialPath ? getCanonical(commercialPath) : post?.metadata?.canonical || url;
+const postRobots = forceNoindex
+  ? { index: false, follow: blogPostRobots?.follow ?? true }
+  : { index: blogPostRobots?.index, follow: blogPostRobots?.follow };
+
+const defaultOgImage =
+  typeof post.image === 'string' && post.image
+    ? { url: post.image, width: 1200, height: 630 }
+    : { url: '/brand/logo-lockup.png', width: 1024, height: 320 };
+
+const metadata = merge(
+  {
+    title: post.title,
+    description: post.excerpt,
+    canonical: String(canonical),
+    robots: postRobots,
+    openGraph: {
+      type: 'article',
+      images: [defaultOgImage],
+    },
+  },
+  { ...(post?.metadata ? { ...post.metadata, canonical: String(canonical) } : {}) }
+) as MetaData;
+
+// Commercial / consumer-bleed posts: never let frontmatter re-enable index
+if (forceNoindex) {
+  metadata.robots = { index: false, follow: metadata.robots?.follow ?? true };
+}
+
+// Prefer post image / frontmatter OG; fall back to brand lockup
+metadata.openGraph = {
+  ...(metadata.openGraph || {}),
+  type: 'article',
+  images: metadata.openGraph?.images?.length ? metadata.openGraph.images : [defaultOgImage],
+};
+
+const siteUrl = getSiteUrl();
+const ogImage = metadata.openGraph?.images?.[0]?.url || defaultOgImage.url;
+const imageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+
+const blogPostingSchema = buildBlogPostingSchema({
+  title: post.title,
+  excerpt: post.excerpt,
+  publishDate: post.publishDate,
+  updateDate: post.updateDate,
+  imageUrl,
+  url: String(url),
+});
+
+const breadcrumbSchema = buildBreadcrumbList([
+  { name: BREADCRUMB_HOME.en, path: '/' },
+  { name: BREADCRUMB_BLOG.en, path: '/blog' },
+  { name: post.title, path: getPermalink(post.permalink, 'post') },
+]);
+---
+
+<Layout metadata={metadata}>
+  <SinglePost post={post} url={url}>
+    {post.Content && <post.Content />}
+  </SinglePost>
+  <BlogPostOemCta slug={post.slug} />
+  <ToBlogLink />
+  <RelatedPosts post={post} />
+
+  <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+</Layout>

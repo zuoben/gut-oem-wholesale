@@ -1,0 +1,72 @@
+site:
+  name: GutSource
+  site: 'https://gutsource.pages.dev/'
+  base: '/'
+  trailingSlash: false
+
+  googleSiteVerificationId: ""
+
+metadata:
+  title:
+    default: Private Label Digestive Enzymes & Probiotics | OEM + Wholesale
+    template: '%s | GutSource'
+  description: 'B2B digestive enzyme and probiotic supplements — OEM private label and wholesale for brands, retailers, gyms, and distributors. Structure/function dietary supplement language only.'
+  robots:
+    index: true
+    follow: true
+  openGraph:
+    site_name: GutSource
+    images:
+      - url: '/brand/logo-lockup.png'
+        width: 1024
+        height: 320
+    type: website
+  twitter:
+    handle: ''
+    site: ''
+    cardType: summary_large_image
+
+i18n:
+  language: en
+  textDirection: ltr
+
+apps:
+  blog:
+    isEnabled: true
+    postsPerPage: 6
+
+    post:
+      isEnabled: true
+      permalink: '/%slug%'
+      robots:
+        index: true
+
+    list:
+      isEnabled: true
+      pathname: 'blog'
+      robots:
+        index: true
+
+    category:
+      isEnabled: true
+      pathname: 'category'
+      robots:
+        index: true
+
+    tag:
+      isEnabled: true
+      pathname: 'tag'
+      robots:
+        index: false
+
+    isRelatedPostsEnabled: true
+    relatedPostsCount: 4
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: ""
+      partytown: false
+
+ui:
+  theme: 'system'

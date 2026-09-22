@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gutsource.pages.dev/sitemap-index.xml

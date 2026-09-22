@@ -1,0 +1,122 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import ContactUs from '~/components/widgets/Contact.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import { buildContactPageSchema } from '~/utils/organization-schema';
+import { getWhatsAppUrl } from '~/utils/whatsapp';
+import {
+  inquiryFormButton,
+  inquiryFormDescription,
+  inquiryFormDisclaimer,
+  inquiryFormInputs,
+  inquiryFormTextarea,
+} from '~/data/inquiry-form';
+
+const whatsappUrl = getWhatsAppUrl();
+
+const faqItems = [
+  {
+    title: 'How quickly will you respond?',
+    description:
+      'We typically reply within <strong>24 hours</strong> on working days. Include buyer type, OEM vs wholesale, estimated bottles/cases, and ship-to country.',
+  },
+  {
+    title: 'What volume should I select?',
+    description:
+      'Use bottles/cases ranges on the form — from sample-only to 1,000+ cases. Exact MOQ is confirmed in the quote.',
+  },
+  {
+    title: 'Can I request samples first?',
+    description:
+      'Yes. Choose Sample (or mention sampling in OEM/Wholesale). Sample path is recommended before private-label production.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(({ title, description }) => ({
+    '@type': 'Question',
+    name: title,
+    acceptedAnswer: { '@type': 'Answer', text: description.replace(/<[^>]+>/g, '') },
+  })),
+};
+
+const metadata = {
+  title: 'Contact — OEM & Wholesale Inquiry',
+  description:
+    'Contact GutSource for private label digestive enzymes & probiotics OEM, or wholesale price lists. B2B inquiry form and WhatsApp.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <script type="application/ld+json" set:html={JSON.stringify(buildContactPageSchema())} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <Hero
+    actions={[
+      { text: 'Send Inquiry', href: '#inquiry-form', variant: 'primary', icon: 'tabler:send' },
+      { text: 'WhatsApp', href: whatsappUrl, target: '_blank' },
+    ]}
+  >
+    <Fragment slot="title">
+      Contact <span class="text-accent">GutSource</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      <p class="max-w-2xl mx-auto">
+        OEM private label and wholesale inquiries for digestive enzyme and probiotic dietary supplements.<br />
+        Structure/function language only — no disease-treatment claims.
+      </p>
+    </Fragment>
+  </Hero>
+
+  <ContactUs
+    id="inquiry-form"
+    title="Request a B2B quote"
+    subtitle="Select your buyer type and OEM vs Wholesale channel. We follow up with MOQ, sampling, and pricing next steps."
+    compact
+    inputs={inquiryFormInputs}
+    textarea={inquiryFormTextarea}
+    disclaimer={inquiryFormDisclaimer}
+    button={inquiryFormButton}
+    description={inquiryFormDescription}
+  />
+
+  <Features2
+    tagline="Channels"
+    title="How to reach us"
+    items={[
+      {
+        title: 'OEM / Private Label',
+        description: 'Custom formula, private label packaging, sampling, and production MOQs.',
+        icon: 'tabler:building-factory-2',
+      },
+      {
+        title: 'Wholesale',
+        description: 'Price lists, case packs, and open-account requests for standard SKUs.',
+        icon: 'tabler:building-store',
+      },
+      {
+        title: 'WhatsApp',
+        description: `<a class="text-link" href="${whatsappUrl}" target="_blank" rel="noopener noreferrer">+86 183-0291-9628</a>`,
+        icon: 'tabler:brand-whatsapp',
+      },
+    ]}
+  />
+
+  <FAQs title="Inquiry FAQ" items={faqItems} />
+
+  <CallToAction
+    actions={[
+      { text: 'OEM page', href: '/oem', variant: 'secondary' },
+      { text: 'Wholesale page', href: '/wholesale', variant: 'secondary' },
+    ]}
+  >
+    <Fragment slot="title">Prefer a guided page first?</Fragment>
+    <Fragment slot="subtitle">Review OEM or Wholesale capabilities, then submit the same inquiry form.</Fragment>
+  </CallToAction>
+</Layout>

@@ -1,0 +1,59 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import { buildAboutPageSchema, buildOrganizationSchema } from '~/utils/organization-schema';
+
+const metadata = {
+  title: 'About GutSource',
+  description:
+    'GutSource is a B2B partner for private label digestive enzymes and probiotics — OEM and wholesale dietary supplements.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <script type="application/ld+json" set:html={JSON.stringify(buildOrganizationSchema())} />
+  <script type="application/ld+json" set:html={JSON.stringify(buildAboutPageSchema())} />
+
+  <Hero
+    actions={[
+      { text: 'Request quote', href: '/contact#inquiry-form', variant: 'primary' },
+      { text: 'OEM', href: '/oem', variant: 'secondary' },
+    ]}
+  >
+    <Fragment slot="title">About <span class="text-accent">GutSource</span></Fragment>
+    <Fragment slot="subtitle">
+      <p class="max-w-2xl mx-auto text-xl">
+        We help brands and channel buyers launch or restock digestive enzyme and probiotic dietary supplements — via OEM private label and wholesale.
+      </p>
+    </Fragment>
+  </Hero>
+
+  <Features
+    title="How we work"
+    items={[
+      {
+        title: 'B2B only',
+        description: 'No consumer retail cart or personal subscription as the main path. Two funnels: OEM and Wholesale.',
+        icon: 'tabler:building-store',
+      },
+      {
+        title: 'Compliance-aware',
+        description: 'Dietary supplement structure/function positioning. No disease-treatment or detox marketing.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Practical MOQs',
+        description: 'Sample-first when needed; bottle and case volumes sized for private label and wholesale reorders.',
+        icon: 'tabler:package',
+      },
+    ]}
+  />
+
+  <CallToAction actions={[{ text: 'Contact us', href: '/contact#inquiry-form', variant: 'primary' }]}>
+    <Fragment slot="title">Talk with the export / OEM desk</Fragment>
+    <Fragment slot="subtitle">Share your brief — we route OEM vs wholesale correctly.</Fragment>
+  </CallToAction>
+</Layout>

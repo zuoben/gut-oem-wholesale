@@ -1,0 +1,60 @@
+---
+import { APP_BLOG } from 'astrowind:config';
+import { getBlogPermalink, getPermalink } from '~/utils/permalinks';
+import { findLatestPosts } from '~/utils/blog';
+
+const posts = APP_BLOG.isEnabled ? await findLatestPosts({ count: 3 }) : [];
+---
+
+{
+  APP_BLOG.isEnabled && posts.length > 0 ? (
+    <section class="not-prose py-14 md:py-16 bg-[#f6f1e8] border-t border-[#e4d8c4]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+          <div>
+            <p class="text-[11px] font-semibold tracking-[0.18em] uppercase text-[#9a6b2f] mb-2">Sourcing guides</p>
+            <h2
+              class="text-3xl md:text-4xl font-semibold tracking-tight text-[#1a1714]"
+              style="font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif"
+            >
+              Sourcing guides for buyers
+            </h2>
+          </div>
+          <a href={getBlogPermalink()} class="text-sm font-semibold text-[#9a6b2f] hover:underline underline-offset-4">
+            All guides →
+          </a>
+        </div>
+
+        <ul class="grid md:grid-cols-3 gap-px bg-[#e4d8c4] border border-[#e4d8c4]">
+          {posts.map((post) => (
+            <li class="bg-[#fffdf8] p-6 md:p-7 flex flex-col">
+              {post.category?.title && (
+                <span class="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9a6b2f] mb-3">
+                  {post.category.title}
+                </span>
+              )}
+              <a href={getPermalink(post.permalink)} class="group flex-1">
+                <h3
+                  class="text-lg md:text-xl font-semibold text-[#1a1714] tracking-tight group-hover:text-[#9a6b2f] transition-colors leading-snug"
+                  style="font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif"
+                >
+                  {post.title}
+                </h3>
+                {post.excerpt && <p class="mt-2 text-sm text-[#6b6258] leading-relaxed line-clamp-3">{post.excerpt}</p>}
+              </a>
+              <a
+                href={getPermalink(post.permalink)}
+                class="mt-5 text-sm font-semibold text-[#9a6b2f] inline-flex items-center"
+              >
+                Read brief
+                <span class="ml-1" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ) : null
+}

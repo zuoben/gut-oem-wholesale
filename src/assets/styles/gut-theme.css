@@ -1,0 +1,188 @@
+/* Public-site GutSource public-site theme. Gated by html.theme-gut.
+   Landing (ADLayout) and /internal omit the class and are unchanged. */
+
+html.theme-gut {
+  --aw-color-primary: #1a1714;
+  --aw-color-secondary: #3f3a34;
+  --aw-color-accent: #9a6b2f;
+  --aw-color-text-heading: #1a1714;
+  --aw-color-text-default: #1a1714;
+  --aw-color-text-muted: #5c534a;
+  --aw-color-bg-page: #f6f1e8;
+  --aw-font-heading: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
+  color-scheme: light;
+}
+
+html.theme-gut body {
+  background-color: #f6f1e8;
+  color: #1a1714;
+}
+
+html.theme-gut [data-aw-toggle-color-scheme] {
+  display: none;
+}
+
+html.theme-gut h1,
+html.theme-gut h2,
+html.theme-gut .font-heading {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.02em;
+}
+
+html.theme-gut #header {
+  border-color: #e4d8c4;
+}
+
+html.theme-gut #header > div:first-child {
+  background-color: rgba(246, 241, 232, 0.92);
+}
+
+html.theme-gut #header.scroll > div:first-child {
+  background-color: rgba(246, 241, 232, 0.95);
+  border-bottom: 1px solid #e4d8c4;
+  box-shadow: none;
+}
+
+html.theme-gut #header .dropdown-menu {
+  background-color: #fffdf8;
+  border: 1px solid #e4d8c4;
+}
+
+html.theme-gut footer {
+  background-color: #fffdf8;
+  border-color: #e4d8c4;
+}
+
+html.theme-gut .btn {
+  border-radius: 2px;
+  border-color: #c9b89a;
+  background: transparent;
+  color: #1a1714;
+}
+
+html.theme-gut .btn:hover {
+  background: #fffdf8;
+  border-color: #1a1714;
+}
+
+html.theme-gut .btn-primary {
+  background: #1a1714;
+  border-color: #1a1714;
+  color: #f6f1e8;
+}
+
+html.theme-gut .btn-primary:hover {
+  background: #3f3a34;
+  border-color: #3f3a34;
+  color: #f6f1e8;
+}
+
+html.theme-gut :is(.rounded-2xl, .rounded-xl, .rounded-lg, .rounded-md) {
+  border-radius: 2px;
+}
+
+html.theme-gut .bg-white:not(.btn-primary):not(.bg-primary) {
+  background-color: #fffdf8;
+}
+
+html.theme-gut [class~='bg-slate-50'],
+html.theme-gut [class~='bg-slate-50/80'],
+html.theme-gut [class~='bg-gray-50'],
+html.theme-gut [class~='bg-slate-100'] {
+  background-color: #f6f1e8;
+}
+
+html.theme-gut [class*='border-slate-'],
+html.theme-gut [class*='border-gray-'],
+html.theme-gut [class*='border-stone-'] {
+  border-color: #e4d8c4;
+}
+
+html.theme-gut [class~='text-teal-700'],
+html.theme-gut [class~='text-teal-600'],
+html.theme-gut [class~='text-teal-800'],
+html.theme-gut [class~='text-teal-400'] {
+  color: #9a6b2f;
+}
+
+html.theme-gut [class~='bg-teal-700'],
+html.theme-gut [class~='bg-teal-800'],
+html.theme-gut [class~='bg-teal-600'] {
+  background-color: #1a1714;
+  color: #f6f1e8;
+}
+
+html.theme-gut [class~='bg-teal-50'],
+html.theme-gut [class~='bg-teal-100'] {
+  background-color: #f6f1e8;
+}
+
+html.theme-gut [class*='border-teal-'] {
+  border-color: #e4d8c4;
+}
+
+html.theme-gut [class~='hover:bg-teal-800']:hover,
+html.theme-gut [class~='hover:bg-teal-700']:hover,
+html.theme-gut [class~='hover:bg-teal-500']:hover {
+  background-color: #3f3a34;
+}
+
+html.theme-gut [class*='accent-teal'] {
+  accent-color: #9a6b2f;
+}
+
+html.theme-gut [class*='file:bg-teal']::file-selector-button {
+  background-color: #1a1714;
+  color: #f6f1e8;
+}
+
+html.theme-gut [class*='hover:file:bg-teal']:hover::file-selector-button {
+  background-color: #3f3a34;
+}
+
+html.theme-gut
+  input:not([type='hidden']):not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']),
+html.theme-gut select,
+html.theme-gut textarea {
+  border-radius: 2px;
+  border-color: #e4d8c4;
+  background-color: #fffdf8;
+  color: #1a1714;
+}
+
+html.theme-gut [data-inquiry-form] button[type='submit'] {
+  background: #1a1714;
+  border-color: #1a1714;
+  color: #f6f1e8;
+  border-radius: 2px;
+}
+
+html.theme-gut .prose a,
+html.theme-gut .text-link {
+  color: #9a6b2f;
+}
+
+html.theme-gut #fab-contact-modal .rounded-t-2xl,
+html.theme-gut #fab-contact-modal .sm\:rounded-2xl {
+  border-radius: 2px;
+}
+
+/* Corner FABs: dark brown + cream icon — never cream-on-cream, never WA green */
+html.theme-gut [data-fab] {
+  background-color: #1a1714;
+  color: #f6f1e8;
+}
+html.theme-gut [data-fab]:hover {
+  background-color: #3f3a34;
+}
+html.theme-gut [data-fab] svg {
+  color: #f6f1e8;
+}
+
+/* WhatsApp lead-gate chrome on the public site (landing keeps its own green) */
+html.theme-gut [data-wa-accent] {
+  background-color: #1a1714;
+}
+html.theme-gut a[data-wa-accent]:hover {
+  background-color: #3f3a34;
+}
