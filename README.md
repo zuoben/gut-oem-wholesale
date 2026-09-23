@@ -4,9 +4,10 @@ B2B site for **private label digestive enzymes & probiotics** — OEM + wholesal
 
 - **Brand:** GutSource
 - **Stack:** Astro static (`npm run build` → `dist/`)
-- **Inquiry CRM:** shared Supabase `contact_inquiries` (`source_site` = `gut-oem-wholesale.pages.dev`)
+- **Inquiry CRM:** shared Supabase `contact_inquiries` (`source_site` = `gut.tradeglo.net`)
+- **Canonical site:** https://gut.tradeglo.net
 - **Repo:** https://github.com/zuoben/gut-oem-wholesale
-- **Deploy target:** Cloudflare Pages project `gut-oem-wholesale`
+- **Deploy target:** Cloudflare Pages project `gut-oem-wholesale` → custom domain `gut.tradeglo.net`
 
 ## Local
 
@@ -26,7 +27,11 @@ npx wrangler pages project create gut-oem-wholesale
 npx wrangler pages deploy dist --project-name=gut-oem-wholesale
 ```
 
-After first deploy, set `src/config.yaml` `site.site` (and `astro.config.ts` `site` if present) to the live URL and rebuild if the hostname differs from `gut-oem-wholesale.pages.dev`.
+After first deploy with token:
+```bash
+npx wrangler pages domain add gut.tradeglo.net --project-name=gut-oem-wholesale
+```
+Point DNS `gut.tradeglo.net` CNAME to `gut-oem-wholesale.pages.dev` (Cloudflare proxy OK). Site config already uses https://gut.tradeglo.net.
 
 ## Pages shipped (v1)
 

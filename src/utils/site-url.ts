@@ -1,5 +1,5 @@
 import { SITE } from 'astrowind:config';
 
 export function getSiteUrl(): string {
-  return SITE?.site?.replace(/\/$/, '') ?? 'https://gut-oem-wholesale.pages.dev';
+  return SITE?.site?.replace(/\/$/, '') ?? 'https://gut.tradeglo.net';
 }

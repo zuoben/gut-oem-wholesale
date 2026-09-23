@@ -37,7 +37,7 @@ export default defineConfig({
     },
   },
 
-  site: 'https://gut-oem-wholesale.pages.dev/',
+  site: 'https://gut.tradeglo.net/',
 
   i18n: {
     defaultLocale: 'en',

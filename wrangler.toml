@@ -1,5 +1,10 @@
+# Cloudflare Pages project name (repo / Pages project id)
 name = "gut-oem-wholesale"
 compatibility_date = "2026-09-22"
 
 [assets]
 directory = "./dist"
+
+# Custom domain (bind after deploy, needs CLOUDFLARE_API_TOKEN):
+#   npx wrangler pages domain add gut.tradeglo.net --project-name=gut-oem-wholesale
+# DNS: CNAME gut.tradeglo.net → gut-oem-wholesale.pages.dev (or CF proxy)

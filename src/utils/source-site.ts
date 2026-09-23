@@ -20,7 +20,13 @@ export function stripWww(host: string): string {
   return host.trim().toLowerCase().replace(/^www\./, '');
 }
 
-const GUT_OEM_WHOLESALE_ALIASES = new Set(['gut-oem-wholesale.pages.dev', 'localhost', '127.0.0.1']);
+/** Preview / local hosts that should store as the production brand hostname. */
+const GUT_OEM_WHOLESALE_ALIASES = new Set([
+  'gut.tradeglo.net',
+  'gut-oem-wholesale.pages.dev',
+  'localhost',
+  '127.0.0.1',
+]);
 
 export function canonicalSourceSite(
   value: string | null | undefined,
@@ -28,10 +34,10 @@ export function canonicalSourceSite(
 ): string {
   const host = hostnameFromUrl(value);
   if (!host) return stripWww(fallback);
-  if (GUT_OEM_WHOLESALE_ALIASES.has(host)) return 'gut-oem-wholesale.pages.dev';
+  if (GUT_OEM_WHOLESALE_ALIASES.has(host)) return 'gut.tradeglo.net';
   return host;
 }
 
 export function sourceSiteFromConfig(siteUrl: string | undefined): string {
-  return hostnameFromUrl(siteUrl) ?? 'unknown';
+  return hostnameFromUrl(siteUrl) ?? 'gut.tradeglo.net';
 }

@@ -32,7 +32,7 @@ export interface ContactInquiryRow {
   channel: string | null;
   product_interest: string | null;
   source_page: string | null;
-  /** Brand hostname that submitted this row (shared DB), e.g. gut-oem-wholesale.pages.dev */
+  /** Brand hostname that submitted this row (shared DB), e.g. gut.tradeglo.net */
   source_site: string | null;
   user_agent: string | null;
   ip_address: string | null;
