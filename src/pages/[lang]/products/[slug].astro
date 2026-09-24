@@ -7,13 +7,17 @@ import { getProductsCopy } from '~/i18n/copy-pages';
 import { getCategoryLabel, getLocalizedProduct } from '~/i18n/products-i18n';
 import { LOCALE_META, localizePath, type Locale } from '~/i18n/locales';
 
-export function getStaticPaths() {
-  return products.map((product) => ({
-    params: { slug: product.slug },
-  }));
-}
+import type { GetStaticPaths } from 'astro';
+import { I18N_LOCALES } from '~/i18n/locales';
 
-const locale: Locale = 'en';
+export const getStaticPaths = (() =>
+  I18N_LOCALES.flatMap((lang) =>
+    products.map((product) => ({
+      params: { lang, slug: product.slug },
+    }))
+  )) satisfies GetStaticPaths;
+
+const locale = Astro.params.lang as Locale;
 const c = getProductsCopy(locale);
 const d = c.detail;
 const L = (path: string) => localizePath(path, locale);

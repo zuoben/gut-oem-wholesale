@@ -11,7 +11,12 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import { getHomeCopy } from '~/i18n/copy-home';
 import { LOCALE_META, localizePath, type Locale } from '~/i18n/locales';
 
-const locale: Locale = 'en';
+import type { GetStaticPaths } from 'astro';
+import { I18N_LOCALES } from '~/i18n/locales';
+
+export const getStaticPaths = (() => I18N_LOCALES.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+
+const locale = Astro.params.lang as Locale;
 const c = getHomeCopy(locale);
 const siteUrl = getSiteUrl();
 const L = (path: string) => localizePath(path, locale);

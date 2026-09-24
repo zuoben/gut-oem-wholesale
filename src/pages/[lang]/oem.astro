@@ -2,16 +2,21 @@
 import Layout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import Features from '~/components/widgets/Features.astro';
-import Features2 from '~/components/widgets/Features2.astro';
+import Steps from '~/components/widgets/Steps.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
-import { getWholesaleCopy } from '~/i18n/copy-home';
+import { getOemCopy } from '~/i18n/copy-home';
 import { getInquiryForm } from '~/i18n/forms';
 import { LOCALE_META, localizePath, type Locale } from '~/i18n/locales';
 
-const locale: Locale = 'en';
-const c = getWholesaleCopy(locale);
+import type { GetStaticPaths } from 'astro';
+import { I18N_LOCALES } from '~/i18n/locales';
+
+export const getStaticPaths = (() => I18N_LOCALES.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+
+const locale = Astro.params.lang as Locale;
+const c = getOemCopy(locale);
 const form = getInquiryForm(locale);
 const L = (path: string) => localizePath(path, locale);
 
@@ -26,8 +31,8 @@ const metadata = {
 <Layout metadata={metadata}>
   <Hero
     actions={[
-      { text: c.priceCta, href: '#inquiry-form', variant: 'primary', icon: 'tabler:file-invoice' },
-      { text: c.oemCta, href: L('/oem'), variant: 'secondary' },
+      { text: c.startCta, href: '#inquiry-form', variant: 'primary', icon: 'tabler:send' },
+      { text: c.wholesaleInstead, href: L('/wholesale'), variant: 'secondary' },
     ]}
   >
     <Fragment slot="title">
@@ -38,9 +43,24 @@ const metadata = {
     </Fragment>
   </Hero>
 
-  <Features tagline={c.assortmentTag} title={c.assortmentTitle} items={c.assortmentItems} />
+  <Features id="enzymes" tagline={c.capTag} title={c.capTitle} items={c.capItems} />
 
-  <Features2 title={c.applyTitle} columns={3} items={c.applyItems} />
+  <section id="probiotics" class="sr-only" aria-hidden="true">Probiotics OEM</section>
+  <section id="fiber" class="sr-only" aria-hidden="true">Fiber powder OEM</section>
+
+  <Features
+    id="examples"
+    tagline={c.examplesTag}
+    title={c.examplesTitle}
+    subtitle={c.examplesSub}
+    columns={2}
+    items={c.examplesItems}
+  />
+  <div class="mx-auto max-w-5xl px-6 -mt-4 mb-10">
+    <a href={L('/products')} class="btn-primary">{c.examplesCta}</a>
+  </div>
+
+  <Steps title={c.pathTitle} items={c.pathSteps} />
 
   <FAQs title={c.faqTitle} items={c.faqs} />
 
@@ -56,7 +76,7 @@ const metadata = {
     description={form.description}
   />
 
-  <CallToAction actions={[{ text: c.needCustom, href: L('/oem'), variant: 'secondary' }]}>
+  <CallToAction actions={[{ text: c.wholesaleChannel, href: L('/wholesale'), variant: 'secondary' }]}>
     <Fragment slot="title">{c.ctaTitle}</Fragment>
     <Fragment slot="subtitle">{c.ctaSub}</Fragment>
   </CallToAction>

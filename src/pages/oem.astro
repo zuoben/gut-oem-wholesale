@@ -6,138 +6,73 @@ import Steps from '~/components/widgets/Steps.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
-import {
-  inquiryFormButton,
-  inquiryFormDescription,
-  inquiryFormDisclaimer,
-  inquiryFormInputs,
-  inquiryFormTextarea,
-} from '~/data/inquiry-form';
+import { getOemCopy } from '~/i18n/copy-home';
+import { getInquiryForm } from '~/i18n/forms';
+import { LOCALE_META, localizePath, type Locale } from '~/i18n/locales';
 
-const faqItems = [
-  {
-    title: 'What formats do you support for private label?',
-    description:
-      'Primary: <strong>capsules</strong> for digestive enzymes and probiotics. Powder fills and optional <strong>fiber powder</strong> are available for qualified programs. Early OEM does not include RTD probiotic/protein soda national shipping.',
-  },
-  {
-    title: 'What certificates language can you share?',
-    description:
-      'We can discuss facility quality systems and documentation typically requested for dietary supplement OEM (e.g. COA per lot where applicable). Certificate lists are shared during RFQ — we do <strong>not</strong> use certificates to imply disease treatment.',
-  },
-  {
-    title: 'How does sampling work?',
-    description:
-      'Sample-first is recommended: approve formula sensory and label mockups before pilot or mass production. Sample fees and credit against first PO are confirmed case by case.',
-  },
-];
+const locale: Locale = 'en';
+const c = getOemCopy(locale);
+const form = getInquiryForm(locale);
+const L = (path: string) => localizePath(path, locale);
 
 const metadata = {
-  title: 'OEM / Private Label Digestive Enzymes & Probiotics',
-  description:
-    'Private label OEM for digestive enzyme capsules, probiotics, and optional fiber powder — MOQ, sampling, formula/format capabilities. B2B structure/function only.',
+  title: c.title,
+  description: c.description,
   ignoreTitleTemplate: true,
+  openGraph: { locale: LOCALE_META[locale].ogLocale },
 };
 ---
 
 <Layout metadata={metadata}>
   <Hero
     actions={[
-      { text: 'Start OEM inquiry', href: '#inquiry-form', variant: 'primary', icon: 'tabler:send' },
-      { text: 'Wholesale instead', href: '/wholesale', variant: 'secondary' },
+      { text: c.startCta, href: '#inquiry-form', variant: 'primary', icon: 'tabler:send' },
+      { text: c.wholesaleInstead, href: L('/wholesale'), variant: 'secondary' },
     ]}
   >
     <Fragment slot="title">
-      OEM / <span class="text-accent">Private Label</span>
+      {c.heroTitleBefore}<span class="text-accent">{c.heroTitleAccent}</span>
     </Fragment>
     <Fragment slot="subtitle">
-      <p class="max-w-2xl mx-auto text-xl">
-        Build your brand on digestive enzyme and probiotic dietary supplements — formula, format, bottle, and label under your name.
-      </p>
+      <p class="max-w-2xl mx-auto text-xl">{c.heroSub}</p>
     </Fragment>
   </Hero>
 
-  <Features
-    id="enzymes"
-    tagline="Capabilities"
-    title="What we private-label"
-    items={[
-      {
-        title: 'Broad-spectrum digestive enzymes',
-        description: 'Capsule SKUs positioned with structure/function digestive support language — not disease claims.',
-        icon: 'tabler:pill',
-      },
-      {
-        title: 'Pillar probiotics',
-        description: 'Core probiotic formulas for private label — CFU and strain details confirmed in technical packs during RFQ.',
-        icon: 'tabler:flask',
-      },
-      {
-        title: 'Optional fiber powder',
-        description: 'Powder format programs for qualified buyers — packaging and scoop specs scoped in the brief.',
-        icon: 'tabler:package',
-      },
-      {
-        title: 'Label & bottle artwork',
-        description: 'Your brand front-of-pack; we help keep claims in structure/function lane for dietary supplements.',
-        icon: 'tabler:palette',
-      },
-    ]}
-  />
+  <Features id="enzymes" tagline={c.capTag} title={c.capTitle} items={c.capItems} />
 
   <section id="probiotics" class="sr-only" aria-hidden="true">Probiotics OEM</section>
   <section id="fiber" class="sr-only" aria-hidden="true">Fiber powder OEM</section>
 
   <Features
     id="examples"
-    tagline="Examples"
-    title="See representative OEM formats"
-    subtitle="Browse enzyme, probiotic, and fiber powder capability examples sourced from public 1688 indexed cards — then inquire for private label."
+    tagline={c.examplesTag}
+    title={c.examplesTitle}
+    subtitle={c.examplesSub}
     columns={2}
-    items={[
-      {
-        title: 'Product examples',
-        description:
-          'Bromelain enzyme powders, probiotic capsules/packs, and dietary-fiber powder pack concepts — not retail cart SKUs.',
-        icon: 'tabler:layout-grid',
-      },
-      {
-        title: 'Open the gallery',
-        description:
-          'Review images, visible-card specs, and selling points, then start an OEM or wholesale inquiry.',
-        icon: 'tabler:chevron-right',
-      },
-    ]}
+    items={c.examplesItems}
   />
   <div class="mx-auto max-w-5xl px-6 -mt-4 mb-10">
-    <a href="/products" class="btn-primary">View product examples</a>
+    <a href={L('/products')} class="btn-primary">{c.examplesCta}</a>
   </div>
 
-  <Steps
-    title="OEM path"
-    items={[
-      { title: 'Brief', description: 'Buyer type, target SKU, format, markets, estimated bottles.', icon: 'tabler:message' },
-      { title: 'Sample', description: 'Approve formula and packaging direction before scale.', icon: 'tabler:box' },
-      { title: 'Pilot / production', description: 'Lock MOQ, artwork, and ship schedule.', icon: 'tabler:truck-delivery' },
-    ]}
-  />
+  <Steps title={c.pathTitle} items={c.pathSteps} />
 
-  <FAQs title="OEM FAQ" items={faqItems} />
+  <FAQs title={c.faqTitle} items={c.faqs} />
 
   <ContactUs
     id="inquiry-form"
-    title="Start an OEM / private label project"
-    subtitle="Select OEM custom formula or Private label in the form so we route correctly. Structure/function dietary supplements only."
+    title={c.formTitle}
+    subtitle={c.formSub}
     compact
-    inputs={inquiryFormInputs}
-    textarea={inquiryFormTextarea}
-    disclaimer={inquiryFormDisclaimer}
-    button={inquiryFormButton}
-    description={inquiryFormDescription}
+    inputs={form.inputs}
+    textarea={form.textarea}
+    disclaimer={form.disclaimer}
+    button={form.button}
+    description={form.description}
   />
 
-  <CallToAction actions={[{ text: 'Wholesale channel', href: '/wholesale', variant: 'secondary' }]}>
-    <Fragment slot="title">Need case packs of standard SKUs instead?</Fragment>
-    <Fragment slot="subtitle">Open a wholesale account for ready enzyme and probiotic lines.</Fragment>
+  <CallToAction actions={[{ text: c.wholesaleChannel, href: L('/wholesale'), variant: 'secondary' }]}>
+    <Fragment slot="title">{c.ctaTitle}</Fragment>
+    <Fragment slot="subtitle">{c.ctaSub}</Fragment>
   </CallToAction>
 </Layout>
