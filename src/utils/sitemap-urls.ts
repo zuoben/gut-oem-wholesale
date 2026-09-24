@@ -101,6 +101,18 @@ export function sitemapPathnameKey(page: string): string {
 /** Keep sitemap aligned with indexable URLs only. */
 export function isIndexableSitemapPage(page: string): boolean {
   try {
+    const pathname = new URL(page).pathname.replace(/\/+$/, '') || '/';
+    const parts = pathname.split('/').filter(Boolean);
+    const first = parts[0];
+    // Locale-prefixed privacy/terms/blog do not exist (EN-only) — never sitemap them.
+    if (
+      first &&
+      (SITEMAP_LOCALE_PREFIXES as readonly string[]).includes(first as (typeof SITEMAP_LOCALE_PREFIXES)[number]) &&
+      parts[1] &&
+      ['privacy', 'terms', 'blog'].includes(parts[1])
+    ) {
+      return false;
+    }
     const key = sitemapPathnameKey(page);
     if (/^\/(internal|landing)(\/|$)/.test(key)) return false;
     if (/^\/tag(\/|$)/.test(key)) return false;

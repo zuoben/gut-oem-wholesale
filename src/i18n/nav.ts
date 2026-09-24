@@ -347,6 +347,8 @@ const NAV: Record<Locale, {
 
 export function getHeaderFooter(locale: Locale) {
   const p = (path: string) => localizePath(path, locale);
+  // Blog/privacy/terms exist in English only — never invent /{lang}/... 404s.
+  const en = (path: string) => localizePath(path, 'en');
   const home = p('/');
   const n = NAV[locale];
   return {
@@ -356,7 +358,7 @@ export function getHeaderFooter(locale: Locale) {
         { text: n.oem, href: p('/oem') },
         { text: n.wholesale, href: p('/wholesale') },
         { text: n.products, href: p('/products') },
-        { text: n.blog, href: p('/blog') },
+        { text: n.blog, href: en('/blog') },
         { text: n.about, href: p('/about') },
         { text: n.contact, href: p('/contact') },
       ],
@@ -369,7 +371,7 @@ export function getHeaderFooter(locale: Locale) {
           links: [
             { text: n.home, href: home },
             { text: n.about, href: p('/about') },
-            { text: n.blog, href: p('/blog') },
+            { text: n.blog, href: en('/blog') },
             { text: n.contact, href: `${p('/contact')}#inquiry-form` },
           ],
         },
@@ -387,14 +389,14 @@ export function getHeaderFooter(locale: Locale) {
           links: [
             { text: n.samples, href: `${p('/contact')}#inquiry-form` },
             { text: n.faq, href: p('/faq') },
-            { text: n.sourcing, href: p('/blog') },
+            { text: n.sourcing, href: en('/blog') },
             { text: n.compliance, href: `${home}#compliance` },
           ],
         },
       ] satisfies NavGroup[],
       secondaryLinks: [
-        { text: n.terms, href: p('/terms') },
-        { text: n.privacy, href: p('/privacy') },
+        { text: n.terms, href: en('/terms') },
+        { text: n.privacy, href: en('/privacy') },
       ],
       socialLinks: [],
       footNote: n.footnote.replace('{home}', home),

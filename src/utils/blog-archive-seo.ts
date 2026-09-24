@@ -22,7 +22,7 @@ export function getBlogListMetadata(page: number) {
   return {
     title: `digestive enzymes & probiotics OEM Blog${pageSuffix}`,
     description:
-      'OEM sourcing guides for custom digestive enzymes & probiotics sets, wholesale buyers, private label, and factory-direct tile production.',
+      'OEM sourcing guides for custom digestive enzymes and probiotics, wholesale buyers, private label packaging, and factory-direct dietary supplement production.',
     openGraph: getBlogArchiveOpenGraph(),
   };
 }

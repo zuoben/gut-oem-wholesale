@@ -26,7 +26,7 @@ export function buildBlogCollectionSchema(opts: {
         '@type': 'ListItem',
         position: index + 1,
         name: post.title,
-        url: post.url,
+        item: post.url,
       })),
     },
   };

@@ -42,7 +42,8 @@ export const LOCALE_META: Record<
   th: { name: 'ไทย', htmlLang: 'th', ogLocale: 'th_TH', dir: 'ltr' },
 };
 
-const PAGE_KEYS = [
+/** Pages that exist for every locale under `[lang]/...`. */
+const LOCALIZED_PAGE_KEYS = [
   '/',
   '/oem',
   '/wholesale',
@@ -50,10 +51,11 @@ const PAGE_KEYS = [
   '/about',
   '/contact',
   '/faq',
-  '/blog',
-  '/privacy',
-  '/terms',
 ] as const;
+
+/** EN-only pages (no `[lang]` counterpart) — hreflang/nav must not invent locale URLs. */
+const EN_ONLY_PAGE_KEYS = ['/blog', '/privacy', '/terms'] as const;
+
 
 export function isLocale(value: string | undefined): value is Locale {
   return Boolean(value && (LOCALES as readonly string[]).includes(value));
@@ -80,22 +82,37 @@ export function localizePath(path: string, locale: Locale): string {
   return clean === '/' ? `/${locale}` : `/${locale}${clean}`;
 }
 
-export function getHreflangMap(pathname: string): Record<Locale, string> | null {
+export function getHreflangMap(pathname: string): Partial<Record<Locale, string>> | null {
   const key = stripLocale(pathname);
-  const isStaticPage = (PAGE_KEYS as readonly string[]).includes(key);
+  const isLocalizedPage = (LOCALIZED_PAGE_KEYS as readonly string[]).includes(key);
+  const isEnOnlyPage = (EN_ONLY_PAGE_KEYS as readonly string[]).includes(key);
   const isProductDetail = /^\/products\/[a-z0-9-]+$/.test(key);
-  if (!isStaticPage && !isProductDetail) return null;
+  if (!isLocalizedPage && !isEnOnlyPage && !isProductDetail) return null;
+
+  // EN-only legal/blog: only emit real 200 URLs.
+  if (isEnOnlyPage) {
+    return { en: localizePath(key, 'en') };
+  }
+
   return Object.fromEntries(LOCALES.map((locale) => [locale, localizePath(key, locale)])) as Record<
     Locale,
     string
   >;
 }
 
+export function isEnOnlyPagePath(pathname: string): boolean {
+  return (EN_ONLY_PAGE_KEYS as readonly string[]).includes(stripLocale(pathname));
+}
+
 export function switchLocalePath(pathname: string, target: Locale): string {
   const hash = pathname.includes('#') ? `#${pathname.split('#')[1]}` : '';
   const map = getHreflangMap(pathname);
-  if (map) return map[target] + hash;
+  if (map?.[target]) return map[target]! + hash;
   if (target === 'en') return stripLocale(pathname) + hash;
+  // EN-only pages: switch to locale hub home rather than a 404 path.
+  if (isEnOnlyPagePath(pathname)) {
+    return localizePath('/', target) + hash;
+  }
   return localizePath('/', target) + hash;
 }
 

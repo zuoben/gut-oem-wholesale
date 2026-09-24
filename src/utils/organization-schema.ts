@@ -11,7 +11,10 @@ export function buildOrganizationSchema() {
     name: 'GutSource',
     alternateName: ['GutSource OEM', 'GutSource Wholesale'],
     url: `${siteUrl}/`,
-    logo: `${siteUrl}/brand/logo-mark.png`,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/brand/logo-mark.png`,
+    },
     description:
       'B2B partner for private label digestive enzymes and probiotics — OEM custom formulas and wholesale case packs for brands, retailers, gyms, and distributors. Dietary supplement structure/function language only.',
     image: `${siteUrl}/brand/logo-mark.png`,
@@ -109,7 +112,7 @@ export function buildBlogPostingSchema(post: {
     headline: post.title,
     description: post.excerpt,
     url: post.url,
-    mainEntityOfPage: post.url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': post.url },
     datePublished: post.publishDate.toISOString(),
     dateModified: (post.updateDate ?? post.publishDate).toISOString(),
     author: { '@type': 'Organization', '@id': ORGANIZATION_ID },

@@ -7,7 +7,7 @@ import type { SEOProps } from 'astro-seo';
 import { SITE, METADATA, I18N } from 'astrowind:config';
 import type { MetaData, MetaDataOpenGraph } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
-import { getHreflangMap, getLocaleFromPath, LOCALE_META, LOCALES } from '~/i18n/locales';
+import { getHreflangMap, getLocaleFromPath, isLocale, LOCALE_META } from '~/i18n/locales';
 
 import { adaptOpenGraphImages } from '~/utils/images';
 
@@ -118,14 +118,20 @@ const seoProps: SEOProps = {
 {
   hreflangMap ? (
     <>
-      {LOCALES.map((loc) => (
-        <link
-          rel="alternate"
-          hreflang={LOCALE_META[loc].htmlLang}
-          href={String(getCanonical(hreflangMap[loc]))}
-        />
-      ))}
-      <link rel="alternate" hreflang="x-default" href={String(getCanonical(hreflangMap.en))} />
+      {Object.entries(hreflangMap).map(([loc, path]) =>
+        isLocale(loc) && path ? (
+          <link
+            rel="alternate"
+            hreflang={LOCALE_META[loc].htmlLang}
+            href={String(getCanonical(path))}
+          />
+        ) : null
+      )}
+      <link
+        rel="alternate"
+        hreflang="x-default"
+        href={String(getCanonical(hreflangMap.en || Object.values(hreflangMap)[0] || '/'))}
+      />
     </>
   ) : (
     <>
