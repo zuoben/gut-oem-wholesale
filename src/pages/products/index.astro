@@ -1,0 +1,116 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import { products, CATEGORY_LABELS, type ProductCategory } from '~/data/products';
+import { BREADCRUMB_HOME, BREADCRUMB_PRODUCTS, buildBreadcrumbList } from '~/utils/breadcrumb-schema';
+
+const pagePath = '/products';
+const metadata = {
+  title: 'OEM Capability Examples — Enzymes, Probiotics & Fiber | GutSource',
+  description:
+    'Representative OEM capability examples for digestive enzyme powders, probiotic capsules/packs, and dietary-fiber powder — B2B inquiry only. Structure/function dietary supplements.',
+  ignoreTitleTemplate: true,
+};
+
+const breadcrumbSchema = buildBreadcrumbList([
+  { name: BREADCRUMB_HOME.en, path: '/' },
+  { name: BREADCRUMB_PRODUCTS.en, path: pagePath },
+]);
+
+const categoryOrder: ProductCategory[] = ['enzyme', 'probiotic', 'fiber'];
+---
+
+<Layout metadata={metadata}>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <Hero
+    tagline="Capability examples"
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Request OEM quote',
+        href: '/contact#inquiry-form',
+        icon: 'tabler:send',
+      },
+      { text: 'OEM programs', href: '/oem' },
+    ]}
+  >
+    <Fragment slot="title">
+      Product examples for <span class="text-accent dark:text-white">OEM &amp; wholesale</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      <p class="max-w-2xl mx-auto text-xl">
+        Representative formats from public 1688 indexed cards — enzymes, probiotics, and fiber powder. Not retail SKUs;
+        inquire for private label or wholesale.
+      </p>
+    </Fragment>
+  </Hero>
+
+  <section class="mx-auto max-w-5xl px-6 pb-2">
+    <div
+      class="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800 px-5 py-4 text-sm text-muted"
+    >
+      <strong class="text-default">Note:</strong> These are <strong>OEM capability examples</strong>, not a shopping cart.
+      Specs reflect visible indexed-card wording (1688 login can limit fuller offer detail). Dietary supplements ·
+      structure/function only · no disease or detox claims · no RTD soda programs.
+    </div>
+  </section>
+
+  {
+    categoryOrder.map((cat) => {
+      const items = products.filter((p) => p.category === cat);
+      if (!items.length) return null;
+      return (
+        <section class="mx-auto max-w-6xl px-6 py-10">
+          <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-6 dark:text-white">
+            {CATEGORY_LABELS[cat]}
+          </h2>
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((product) => (
+              <a
+                href={`/products/${product.slug}`}
+                class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div class="aspect-[4/3] bg-slate-50 dark:bg-slate-800 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    width="640"
+                    height="480"
+                    class="h-full w-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="flex flex-1 flex-col gap-2 p-4">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-primary">
+                    {CATEGORY_LABELS[product.category]} · {product.format}
+                  </p>
+                  <h3 class="text-lg font-semibold leading-snug dark:text-white group-hover:text-primary transition-colors">
+                    {product.name}
+                  </h3>
+                  <p class="text-sm text-muted line-clamp-2">{product.specs.join(' · ')}</p>
+                  <span class="mt-auto pt-2 text-sm font-medium text-primary">View details →</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <CallToAction
+    actions={[
+      { text: 'OEM / Private Label', href: '/oem', variant: 'primary' },
+      { text: 'Wholesale', href: '/wholesale', variant: 'secondary' },
+      { text: 'Contact form', href: '/contact#inquiry-form' },
+    ]}
+  >
+    <Fragment slot="title">Ready to brief a similar SKU?</Fragment>
+    <Fragment slot="subtitle">
+      Tell us format, pack count, and estimated volume — we route OEM vs wholesale correctly.
+    </Fragment>
+  </CallToAction>
+</Layout>

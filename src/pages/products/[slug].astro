@@ -1,0 +1,126 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import {
+  products,
+  getProductBySlug,
+  CATEGORY_LABELS,
+  SOURCE_NOTE,
+} from '~/data/products';
+import { BREADCRUMB_HOME, BREADCRUMB_PRODUCTS, buildBreadcrumbList } from '~/utils/breadcrumb-schema';
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const product = getProductBySlug(slug!);
+
+if (!product) {
+  return Astro.redirect('/products');
+}
+
+const metadata = {
+  title: `${product.name} | OEM Example | GutSource`,
+  description: `${product.name} — representative ${CATEGORY_LABELS[product.category].toLowerCase()} OEM capability example. B2B inquiry only; structure/function dietary supplements.`,
+  ignoreTitleTemplate: true,
+};
+
+const breadcrumbSchema = buildBreadcrumbList([
+  { name: BREADCRUMB_HOME.en, path: '/' },
+  { name: BREADCRUMB_PRODUCTS.en, path: '/products' },
+  { name: product.name, path: `/products/${product.slug}` },
+]);
+
+const inquiryHref = `/contact?looking=OEM%2FPrivate%20label#inquiry-form`;
+---
+
+<Layout metadata={metadata}>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <section class="mx-auto max-w-6xl px-6 pt-10 pb-4">
+    <nav class="text-sm text-muted mb-6">
+      <a href="/" class="hover:text-primary">Home</a>
+      <span class="mx-2">/</span>
+      <a href="/products" class="hover:text-primary">Products</a>
+      <span class="mx-2">/</span>
+      <span class="text-default">{product.name}</span>
+    </nav>
+
+    <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
+      <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+        <img
+          src={product.image}
+          alt={product.name}
+          width="800"
+          height="600"
+          class="w-full h-auto object-cover"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary mb-2">
+          {CATEGORY_LABELS[product.category]} · {product.format}
+        </p>
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-2 dark:text-white">
+          {product.name}
+        </h1>
+        <p class="text-muted mb-6">{product.nameZh}</p>
+
+        <div class="mb-6">
+          <h2 class="text-lg font-semibold mb-3 dark:text-white">Specs (visible card wording)</h2>
+          <ul class="list-disc pl-5 space-y-1 text-muted">
+            {product.specs.map((s) => (
+              <li>{s}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="mb-6">
+          <h2 class="text-lg font-semibold mb-3 dark:text-white">Selling points</h2>
+          <ul class="list-disc pl-5 space-y-1 text-muted">
+            {product.sellingPoints.map((s) => (
+              <li>{s}</li>
+            ))}
+          </ul>
+        </div>
+
+        <p class="text-sm text-muted border-l-4 border-teal-400/60 pl-4 mb-8">{SOURCE_NOTE}</p>
+
+        <div class="flex flex-wrap gap-3">
+          <a href={inquiryHref} class="btn-primary">
+            Inquire about OEM / private label
+          </a>
+          <a href="/wholesale" class="btn-secondary">Wholesale</a>
+          <a href="/products" class="btn btn-tertiary">All examples</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-6">
+    <div
+      class="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800 px-5 py-4 text-sm text-muted"
+    >
+      <strong class="text-default">Compliance:</strong> Dietary supplement structure/function language only. Not intended
+      to diagnose, treat, cure, or prevent any disease. No IBS, detox, or leaky-gut claims. No RTD soda products in early
+      programs.
+    </div>
+  </section>
+
+  <CallToAction
+    actions={[
+      { text: 'Contact / inquiry form', href: '/contact#inquiry-form', variant: 'primary' },
+      { text: 'OEM programs', href: '/oem', variant: 'secondary' },
+    ]}
+  >
+    <Fragment slot="title">Want a private-label version of this format?</Fragment>
+    <Fragment slot="subtitle">
+      Share target pack count, markets, and estimated volume — we confirm MOQ, sampling, and documentation during RFQ.
+    </Fragment>
+  </CallToAction>
+</Layout>

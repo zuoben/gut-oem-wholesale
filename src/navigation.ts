@@ -4,6 +4,7 @@ export const headerData = {
   en: {
     links: [
       { text: 'Home', href: '/' },
+      { text: 'Products', href: getPermalink('/products') },
       { text: 'OEM / Private Label', href: getPermalink('/oem') },
       { text: 'Wholesale', href: getPermalink('/wholesale') },
       { text: 'Blog', href: getBlogPermalink() },
@@ -29,11 +30,12 @@ export const footerData = {
       {
         title: 'B2B Channels',
         links: [
+          { text: 'Product examples', href: '/products' },
           { text: 'OEM / Private Label', href: '/oem' },
           { text: 'Wholesale Account', href: '/wholesale' },
-          { text: 'Digestive Enzymes', href: '/oem#enzymes' },
-          { text: 'Probiotics', href: '/oem#probiotics' },
-          { text: 'Fiber Powder (optional)', href: '/oem#fiber' },
+          { text: 'Digestive Enzymes', href: '/products' },
+          { text: 'Probiotics', href: '/products' },
+          { text: 'Fiber Powder', href: '/products' },
         ],
       },
       {
