@@ -49,6 +49,7 @@ const PAGE_KEYS = [
   '/products',
   '/about',
   '/contact',
+  '/faq',
   '/blog',
   '/privacy',
   '/terms',

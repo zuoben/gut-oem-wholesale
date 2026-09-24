@@ -4,7 +4,23 @@ import { join } from 'node:path';
 import type { SitemapItem } from '@astrojs/sitemap';
 
 /** Locale prefixes used in URL paths (not hreflang codes). */
-export const SITEMAP_LOCALE_PREFIXES = ['es', 'de', 'fr', 'ja', 'zh-tw', 'ko', 'vi'] as const;
+export const SITEMAP_LOCALE_PREFIXES = [
+  'zh-tw',
+  'hi',
+  'es',
+  'ar',
+  'fr',
+  'bn',
+  'pt',
+  'ru',
+  'ur',
+  'id',
+  'de',
+  'ja',
+  'ko',
+  'vi',
+  'th',
+] as const;
 
 /** Match trailingSlash: false — origin home has no slash; other paths have no trailing slash. */
 export function canonicalizeSitemapUrl(url: string): string {
@@ -19,9 +35,23 @@ export function canonicalizeSitemapUrl(url: string): string {
   }
 }
 
+/** Prefer real en alternate; otherwise strip locale prefix (never treat /ar/... as English). */
 function englishSitemapUrl(item: SitemapItem): string {
   const fromLinks = item.links?.find((l) => l.lang === 'en')?.url;
   if (fromLinks) return canonicalizeSitemapUrl(fromLinks);
+
+  try {
+    const u = new URL(canonicalizeSitemapUrl(item.url));
+    const parts = u.pathname.split('/').filter(Boolean);
+    const first = parts[0];
+    if (first && (SITEMAP_LOCALE_PREFIXES as readonly string[]).includes(first)) {
+      const rest = parts.slice(1).join('/');
+      u.pathname = rest ? `/${rest}` : '/';
+      return canonicalizeSitemapUrl(u.href);
+    }
+  } catch {
+    // fall through
+  }
   return canonicalizeSitemapUrl(item.url);
 }
 
