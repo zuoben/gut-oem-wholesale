@@ -1,0 +1,75 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import { getHomeCopy, getOemCopy } from '~/i18n/copy-home';
+import { I18N_LOCALES, localizePath, LOCALE_META, type Locale } from '~/i18n/locales';
+import { buildOrganizationSchema } from '~/utils/organization-schema';
+import { buildBreadcrumbList, BREADCRUMB_HOME } from '~/utils/breadcrumb-schema';
+
+export const getStaticPaths = (() => I18N_LOCALES.map((lang) => ({ params: { lang } }))) satisfies GetStaticPaths;
+
+const locale = Astro.params.lang as Locale;
+const home = getHomeCopy(locale);
+const oem = getOemCopy(locale);
+const L = (path: string) => localizePath(path, locale);
+
+const overviewFaqs = home.faqs;
+const oemFaqs = oem.faqs;
+const allFaqs = [...overviewFaqs, ...oemFaqs];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: allFaqs.map(({ title, description }) => ({
+    '@type': 'Question',
+    name: title,
+    acceptedAnswer: { '@type': 'Answer', text: description.replace(/<[^>]+>/g, '') },
+  })),
+};
+
+const breadcrumbSchema = buildBreadcrumbList([
+  { name: BREADCRUMB_HOME[locale] ?? 'Home', path: L('/') },
+  { name: 'FAQ', path: L('/faq') },
+]);
+
+const metadata = {
+  title: 'Digestive Enzymes & Probiotics FAQ | GutSource',
+  description:
+    'FAQ for GutSource B2B buyers: private label digestive enzymes, probiotics, MOQ, wholesale accounts, and structure/function-only claims.',
+  ignoreTitleTemplate: true,
+  openGraph: { locale: LOCALE_META[locale].ogLocale },
+};
+---
+
+<Layout metadata={metadata}>
+  <script type="application/ld+json" set:html={JSON.stringify(buildOrganizationSchema())} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <Hero
+    tagline="FAQ"
+    actions={[{ text: 'Request quote', href: `${L('/contact')}#inquiry-form`, variant: 'primary' }]}
+  >
+    <Fragment slot="title">
+      Digestive enzymes & probiotics<br />
+      <span class="text-accent">OEM / wholesale FAQ</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      B2B answers for brand builders, retailers, gyms, and distributors — structure/function dietary supplements only.
+    </Fragment>
+  </Hero>
+
+  <FAQs title={home.faqTitle} items={overviewFaqs} columns={1} />
+  <FAQs title={oem.faqTitle} items={oemFaqs} columns={1} />
+
+  <CallToAction
+    title="Need a formal RFQ?"
+    actions={[
+      { text: 'Contact form', href: `${L('/contact')}#inquiry-form`, variant: 'primary' },
+      { text: 'Product examples', href: L('/products') },
+    ]}
+  />
+</Layout>

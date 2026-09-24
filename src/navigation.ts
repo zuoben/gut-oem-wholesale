@@ -43,7 +43,7 @@ export const footerData = {
         links: [
           { text: 'Request Quote', href: '/contact#inquiry-form' },
           { text: 'Sample Requests', href: '/contact#inquiry-form' },
-          { text: 'FAQ', href: '/#faq' },
+          { text: 'FAQ', href: '/faq' },
           { text: 'Sourcing Notes', href: '/blog' },
         ],
       },

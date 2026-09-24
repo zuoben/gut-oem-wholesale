@@ -386,7 +386,7 @@ export function getHeaderFooter(locale: Locale) {
           title: n.support,
           links: [
             { text: n.samples, href: `${p('/contact')}#inquiry-form` },
-            { text: n.faq, href: `${home}#faq` },
+            { text: n.faq, href: p('/faq') },
             { text: n.sourcing, href: p('/blog') },
             { text: n.compliance, href: `${home}#compliance` },
           ],
