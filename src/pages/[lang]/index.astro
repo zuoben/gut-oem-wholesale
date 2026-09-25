@@ -52,7 +52,7 @@ const faqSchema = {
 };
 
 const metadata = {
-  title: c.title,
+  title: c.webName, // GEO: brand GutSource in <title> (matches JSON-LD / llms.txt)
   description: c.description,
   ignoreTitleTemplate: true,
   openGraph: { locale: LOCALE_META[locale].ogLocale },

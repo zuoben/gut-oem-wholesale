@@ -39,7 +39,7 @@ export type HomeCopy = {
 
 const HOME: Record<Locale, HomeCopy> = {
   "en": {
-    "title": "Private Label Digestive Enzymes & Probiotics | OEM + Wholesale",
+    "title": "Private Label Digestive Enzymes & Probiotics | OEM + Wholesale | GutSource",
     "description": "GutSource — B2B OEM private label and wholesale for digestive enzyme capsules, probiotics, and optional fiber powder. Structure/function dietary supplements only.",
     "heroTitleBefore": "Private label ",
     "heroTitleAccent": "digestive enzymes & probiotics",
