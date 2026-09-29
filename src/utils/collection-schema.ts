@@ -1,3 +1,4 @@
+import { getSiteUrl } from '~/utils/site-url';
 import { ORGANIZATION_ID } from '~/utils/organization-schema';
 
 export interface CollectionPostItem {
@@ -17,7 +18,7 @@ export function buildBlogCollectionSchema(opts: {
     name: opts.name,
     description: opts.description,
     url: opts.url,
-    isPartOf: { '@type': 'WebSite', name: 'GutSource' },
+    isPartOf: { '@type': 'WebSite', '@id': `${getSiteUrl()}/#website`, name: 'GutSource', url: `${getSiteUrl()}/` },
     publisher: { '@id': ORGANIZATION_ID },
     mainEntity: {
       '@type': 'ItemList',

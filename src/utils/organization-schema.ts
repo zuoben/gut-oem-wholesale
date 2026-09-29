@@ -71,7 +71,7 @@ export function buildAboutPageSchema() {
     name: 'About GutSource',
     description:
       'GutSource helps brands and retailers launch or restock digestive enzyme and probiotic dietary supplements via OEM private label and wholesale.',
-    isPartOf: { '@type': 'WebSite', url: `${siteUrl}/` },
+    isPartOf: { '@type': 'WebSite', '@id': `${siteUrl}/#website`, name: 'GutSource', url: `${siteUrl}/` },
     about: { '@id': ORGANIZATION_ID },
   };
 }
@@ -86,7 +86,7 @@ export function buildContactPageSchema() {
     name: 'Contact GutSource — OEM & Wholesale Inquiry',
     description:
       'Request OEM private label or wholesale pricing for digestive enzymes and probiotics. B2B inquiry form and WhatsApp.',
-    isPartOf: { '@type': 'WebSite', url: `${siteUrl}/` },
+    isPartOf: { '@type': 'WebSite', '@id': `${siteUrl}/#website`, name: 'GutSource', url: `${siteUrl}/` },
     about: { '@id': ORGANIZATION_ID },
   };
 }

@@ -9,6 +9,7 @@ import Steps from '~/components/widgets/Steps.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import { getHomeCopy } from '~/i18n/copy-home';
+import { products, CATEGORY_LABELS } from '~/data/products';
 import { LOCALE_META, localizePath, type Locale } from '~/i18n/locales';
 
 const locale: Locale = 'en';
@@ -19,8 +20,9 @@ const L = (path: string) => localizePath(path, locale);
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
   name: 'GutSource',
-  url: `${siteUrl}${L('/')}`,
+  url: `${siteUrl}/`,
   description: c.webDesc,
   inLanguage: LOCALE_META[locale].htmlLang,
   publisher: { '@id': ORGANIZATION_ID },
@@ -32,7 +34,7 @@ const webPageSchema = {
   '@id': `${siteUrl}${L('/')}#webpage`,
   url: `${siteUrl}${L('/')}`,
   name: c.webName,
-  isPartOf: { '@type': 'WebSite', url: `${siteUrl}${L('/')}` },
+  isPartOf: { '@type': 'WebSite', '@id': `${siteUrl}/#website`, name: 'GutSource', url: `${siteUrl}/` },
   about: { '@id': ORGANIZATION_ID },
 };
 
@@ -46,6 +48,34 @@ const faqSchema = {
   })),
 };
 
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'GutSource OEM capability examples',
+  itemListElement: products.map((product, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'Product',
+      name: product.name,
+      description:
+        product.sellingPoints[0] ??
+        `${CATEGORY_LABELS[product.category]} — ${product.format} OEM capability example for B2B private label and wholesale.`,
+      image: `${siteUrl}${product.image}`,
+      url: `${siteUrl}${L(`/products/${product.slug}`)}`,
+      brand: { '@type': 'Brand', name: 'GutSource' },
+      category: CATEGORY_LABELS[product.category],
+      offers: {
+        '@type': 'Offer',
+        url: `${siteUrl}${L(`/products/${product.slug}`)}`,
+        availability: 'https://schema.org/InStock',
+        description: 'Factory quote on inquiry; MOQ quoted by SKU from the product-line brief on this page.',
+      },
+    },
+  })),
+};
+
+
 const metadata = {
   title: c.webName, // GEO: brand GutSource in <title> (matches JSON-LD / llms.txt)
   description: c.description,
@@ -58,6 +88,7 @@ const metadata = {
   <script type="application/ld+json" set:html={JSON.stringify(buildOrganizationSchema())} />
   <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
   <Hero
